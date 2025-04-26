@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MySlam</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      background-color: #111;
+      color: white;
+    }
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      height: 60px;
+      padding: 0 15px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+    header.hide {
+      transform: translateY(-100%);
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .navbar .logo {
+      width: 80px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    .navbar input {
+      flex-grow: 1;
+      max-width: 100%;
+      margin: 0 10px;
+      padding: 6px 10px;
+      border-radius: 20px;
+      border: 1px solid #a259ff;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 14px;
+    }
+    .navbar .menu {
+      display: flex;
+      gap: 10px;
+    }
+    .navbar .menu button {
+      background-color: #ff2f6c;
+      border: none;
+      padding: 6px 14px;
+      color: white;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+    .navbar .menu button:hover {
+      background-color: #ff4c80;
+    }
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      width: 28px;
+      height: 22px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      margin-right: 10px;
+    }
+    .menu-toggle div {
+      background-color: white;
+      height: 3px;
+      width: 100%;
+      border-radius: 2px;
+      margin: 3px 0;
+    }
+.sidebar {
+  width: 200px;
+  background: rgba(0, 0, 0, 0.9);
+  position: fixed;
+  top: 0;
+  left: -250px;
+  height: 100%;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: left 0.4s ease, border-right 0.3s ease, box-shadow 0.3s ease;
+  z-index: 2000;
+  border-right: 2px solid transparent;
+  box-shadow: none;
+}
+
+.sidebar.open {
+  left: 0;
+  border-right: 2px solid #a259ff;
+  box-shadow: 5px 0 20px rgba(162, 89, 255, 0.3);
+}
+    .sidebar a,
+    .sidebar button {
+      color: white;
+      background: none;
+      border: none;
+      font-size: 18px;
+      text-align: right;
+      padding: 10px 0;
+      cursor: pointer;
+    }
+    .sidebar a:hover,
+    .sidebar button:hover {
+      background-color: #ff2f6c;
+      padding-right: 10px;
+    }
+    .content {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      transition: opacity 0.3s ease;
+    }
+    .video-card {
+      background: #1a1a1a;
+      border-radius: 10px;
+      border: 1px solid #a259ff;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .video-card:hover {
+      transform: translateY(-5px);
+    }
+    .video-card img {
+      width: 100%;
+      height: auto;
+    }
+    .video-card .info {
+      padding: 10px;
+    }
+    .video-card .info h3 {
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+    .video-card .info p {
+      font-size: 14px;
+      color: #ccc;
+    }
+    .video-player {
+      display: none;
+      position: relative;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+      margin: 20px;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 20px;
+    }
+    .video-details {
+      padding: 15px;
+    }
+    .video-details h1 {
+      font-size: 23px;
+      margin-bottom: 10px;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .actions button {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .actions button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    @media (max-width: 768px) {
+      .navbar .menu {
+        display: none;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+      .navbar input {
+        font-size: 13px;
+      }
+      .video-card .info h3 {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <div class="navbar">
+      <button class="menu-toggle" id="menu-toggle">
+        <div></div><div></div><div></div>
+      </button>
+      <img src="https://i.ibb.co/nNZCZ00Q/1000071927.png" class="logo" alt="⥽" onclick="toggleSidebar()" />
+      <input type="text" placeholder="ابحث عن الفيديو..." />
+      <div class="menu">
+        <button>تسجيل الدخول</button>
+        <button>الاشتراك</button>
+      </div>
+    </div>
+  </header>
+    <h2 style="margin-bottom: 20px; color: #a259ff;">Arab</h2>
+<div class="sidebar" id="sidebar">
+  <h2 style="margin-bottom: 20px; color: #a259ff;">القائمة</h2>
+  <a href="XC1.html"><span style="margin-left: 8px;">⇱</span> الرئيسية</a>
+  <a href="#"><span style="margin-left: 8px;">⇱</span></a>
+  <a href="#"><span style="margin-left: 8px;">⇱</span></a>
+  <a href="HR3.html"><span style="margin-left: 8px;">⇱</span>تك توك عربي</a>
+  <a href="HR1.html"><span style="margin-left: 8px;">⇱</span>رجوع</a>
+
+  </div>
+  
+  <div class="video-player" id="video-player">
+    <button id="back-button" style="margin-top: 20px; background-color: #ff2f6c; border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer;">🔙</button>
+    <video id="video" controls></video>
+    <div class="video-details">
+      <h1 id="video-title">عنوان الفيديو</h1>
+      <p id="video-description">وصف الفيديو</p>
+      <div class="actions">
+        <button>إعجاب</button>
+        <button>إضافة إلى المفضلة</button>
+        <button>مشاركة</button>
+      </div>
+    </div>
+  </div>
+  
+
+    
+<div class="content">
+  <div class="video-card" onclick="location.href='?id=v6'">
+    <img src="A6.PNG" alt="" />
+    <h3>أجمل وأنظف مؤخرة</h3>
+    <p>صديقي اعجبني في طريقة ممارسته</p>
+  </div>
+
+  <div class="video-card" onclick="location.href='?id=v7'">
+    <img src="v7.PNG" alt="" />
+    <h3>قحبه تفرك كسها</h3>
+    <p>X</p>
+  </div>
+
+  <div class="video-card" onclick="location.href='?id=v8'">
+    <img src="v8.PNG" alt="" />
+    <h3></h3>
+    <p></p>
+  </div>
+
+  <div class="video-card" onclick="location.href='?id=v9'">
+    <img src="v9.PNG" alt="" />
+    <h3></h3>
+    <p></p>
+  </div>
+
+  <div class="video-card" onclick="location.href='?id=v10'">
+    <img src="v10.PNG" alt="" />
+    <h3></h3>
+    <p></p>
+  </div>
+
+  <div class="video-card" onclick="location.href='?id=v11'">
+    <img src="v11.PNG" alt="" />
+    <h3></h3>
+    <p></p>
+  </div>
+</div>
+    
+    
+ 
+  
+  
+
+  <script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const sidebar = document.getElementById('sidebar');
+  const header = document.getElementById('header');
+  const videoPlayer = document.getElementById('video-player');
+  const videoElement = document.getElementById('video');
+  const videoTitle = document.getElementById('video-title');
+  const videoDescription = document.getElementById('video-description');
+  const favoriteButton = document.querySelector('.actions button:nth-child(2)'); // زر إضافة إلى المفضلة
+
+  menuToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+  });
+
+  function toggleSidebar() {
+    sidebar.classList.toggle('open');
+  }
+
+  let lastScrollTop = 0;
+  window.addEventListener("scroll", function () {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollTop > lastScrollTop) {
+      header.classList.add("hide");
+    } else {
+      header.classList.remove("hide");
+    }
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  });
+
+  const videoSources = {
+    "v6": {
+      src: "https://instagram.fdmm1-2.fna.fbcdn.net/o1/v/t16/f2/m69/AQMwD4U3rjBq7XpGcV9Z9PSkDL7Pcdpq-uqNQjEsSuFR5WYCH9gpN9GO5oN0bZm7U-EyBFCtevXbQgrWV9ZTpp9S.mp4?strext=1&_nc_cat=111&_nc_oc=Adk-vRjUf0Lne9WvHE96iQ4ztIPJbgbemW3b2Q7kQqN4rN4rcVoMuzOzvILaLq7kxiU&_nc_sid=8bf8fe&_nc_ht=instagram.fdmm1-2.fna.fbcdn.net&_nc_ohc=hex_RDHwzjoQ7kNvwGYhJaJ&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0xJUFMuQzMuMTI4MC5wcm9ncmVzc2l2ZV9oMjY0LWJhc2ljLWdlbjJfNzIwcCIsInhwdl9hc3NldF9pZCI6MTQzMTg1Mzk0Nzc3OTc5NCwidmlfdXNlY2FzZV9pZCI6MTAwOTksImR1cmF0aW9uX3MiOjI5NiwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_zt=28&oh=00_AfHBoIJ4iUNyNAP8epwFg09-mwbIfSH_6Wr_ixM3dHW-yg&oe=6811A701",
+      title: "",
+      description: ""
+    },
+    "v7": {
+      src: "https://video.twimg.com/amplify_video/1916052285198630912/vid/avc1/720x908/CSXtxfurDQ3EsHeR.mp4?tag=14",
+      title: "",
+      description: ""
+      
+    }
+  };
+
+  const params = new URLSearchParams(window.location.search);
+  const videoId = params.get('id');
+  if (videoId && videoSources[videoId]) {
+    const videoData = videoSources[videoId];
+    videoElement.src = videoData.src;
+    videoTitle.textContent = videoData.title;
+    videoDescription.textContent = videoData.description;
+    videoPlayer.style.display = 'block';
+    document.querySelector('.content').style.display = 'none';
+    videoElement.play();
+    window.scrollTo({
+      top: videoPlayer.offsetTop - 60,
+      behavior: 'smooth'
+    });
+
+    // التحقق إذا كان الفيديو مضافًا إلى المفضلة
+    if (isFavorite(videoId)) {
+      favoriteButton.textContent = 'تم إضافته إلى المفضلة';
+      favoriteButton.style.backgroundColor = '#ff2f6c'; // تغيير اللون
+    }
+  }
+
+  function isFavorite(videoId) {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    return favorites.includes(videoId);
+  }
+
+  function addToFavorites(videoId) {
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    if (!favorites.includes(videoId)) {
+      favorites.push(videoId);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      favoriteButton.textContent = 'تم إضافته إلى المفضلة';
+      favoriteButton.style.backgroundColor = '#ff2f6c'; // تغيير اللون
+    }
+  }
+
+  favoriteButton.addEventListener('click', () => {
+    if (!isFavorite(videoId)) {
+      addToFavorites(videoId);
+    }
+  });
+
+  const backButton = document.getElementById('back-button');
+  backButton.addEventListener('click', () => {
+    videoPlayer.style.display = 'none';
+    document.querySelector('.content').style.display = 'grid';
+    videoElement.pause();
+    history.pushState({}, document.title, window.location.pathname);
+  });
+
+  </script>
+</body>
+</html>

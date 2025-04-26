@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مرحباً بك</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-bg {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.7);
+    }
+
+    .content {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 40px;
+      border: 2px solid #d3a9ff;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .start-btn {
+      padding: 12px 30px;
+      background-color: #ff2f6c;
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+
+    .start-btn:hover {
+      background-color: #ff4c80;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="video-bg">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="https://scontent.cdninstagram.com/o1/v/t2/f2/m86/AQPw-K2lLMuV7_rwWzicD1lC2qMVvlKb27sDHGEYaeSbu8MTrzjcLt_nM3AU22kJgdLjdTbbXvDvOy9hCjfSYL7tAwiepO-yD82gY9o.mp4?_nc_cat=104&_nc_oc=Adn60Gm71ScIC5sW7QOsi-pjzHLPIFRTt7fr1-AVIkxmCrGfxMHe3zT3E9s_ky7gk4Y&_nc_sid=5e9851&_nc_ht=instagram.fruh6-1.fna.fbcdn.net&_nc_ohc=PPvy4qPJtyYQ7kNvwFbtrBR&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0xJUFMuQzMuNzIwLmRhc2hfYmFzZWxpbmVfMV92MSIsInhwdl9hc3NldF9pZCI6NjExNTQ1MTcxODgyNDY1LCJ2aV91c2VjYXNlX2lkIjoxMDA5OSwiZHVyYXRpb25fcyI6MTAsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&vs=ea92b1d151d4acad&_nc_vs=HBksFQIYUmlnX3hwdl9yZWVsc19wZXJtYW5lbnRfc3JfcHJvZC82QjQ4QjI4MkMxM0JEM0Q0NDlBMzQ0OURDRjY5NDQ4OV92aWRlb19kYXNoaW5pdC5tcDQVAALIAQAVAhg6cGFzc3Rocm91Z2hfZXZlcnN0b3JlL0dFRGNEUjJidWRsUExWTURBQTY5Z01LV3lWWXNicV9FQUFBRhUCAsgBACgAGAAbAogHdXNlX29pbAExEnByb2dyZXNzaXZlX3JlY2lwZQExFQAAJsLH38vOjJYCFQIoAkMzLBdAJGZmZmZmZhgSZGFzaF9iYXNlbGluZV8xX3YxEQB1_gcA&_nc_zt=28&oh=00_AfEtl59EFfhRiuYPMqiUyDasvvFtF7RFBZApHRlREIUXdQ&oe=680F1C45"type="video/mp4" />
+      المتصفح لا يدعم عرض الفيديو.
+    </video>
+  </div>
+
+  <div class="content">
+    <h1>🜠</h1>
+    <h1>مرحباً بك في قسم المثلي</h1>
+    <p>اضغط ابدأ التصفح وستمتع</p>
+    <a href="HR1.html" class="start-btn">ابدأ التصفح</a>
+    
+  </div>
+
+</body>
+</html>

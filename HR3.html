@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyTikTok</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 50px;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 15px;
+      z-index: 100;
+    }
+    .navbar .logo {
+      width: 80px;
+      cursor: pointer;
+    }
+    .menu {
+      display: flex;
+      gap: 10px;
+    }
+    .menu button {
+      background: transparent;
+      border: 1px solid #ff2f6c;
+      padding: 6px 14px;
+      color: white;
+      font-weight: bold;
+      border-radius: 30px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .menu button:hover {
+      background: #ff2f6c;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .hamburger div {
+      width: 30px;
+      height: 4px;
+      background: white;
+      transition: 0.3s;
+    }
+    .hamburger.active div:nth-child(1) {
+      transform: rotate(45deg) translateY(7px);
+    }
+    .hamburger.active div:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active div:nth-child(3) {
+      transform: rotate(-45deg) translateY(-7px);
+    }
+    .sidebar {
+      width: 250px;
+      background: #1b1b1b;
+      padding: 20px;
+      position: fixed;
+      top: 0;
+      left: -250px;
+      height: 100%;
+      transition: transform 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 90;
+      border-right: 2px solid #ff2f6c;
+    }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .sidebar a:hover {
+      background: #ff2f6c;
+    }
+    .sidebar.open {
+      transform: translateX(250px);
+    }
+    .video-container {
+      margin-top: 50px;
+      height: calc(100vh - 50px);
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+    .video-card {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      scroll-snap-align: start;
+    }
+    .video-card video {
+      width: 80%;
+      height: auto;
+      max-height: 90%;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(255, 47, 108, 0.5);
+      transition: transform 0.3s;
+    }
+    .video-card video:active {
+      transform: scale(1.02);
+    }
+    .video-duration {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 5px 10px;
+      font-size: 14px;
+      border-radius: 20px;
+    }
+    .overlay {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      align-items: center;
+    }
+    .overlay .info {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .overlay .info span {
+      font-size: 15px;
+    }
+    .overlay .likes {
+      color: #ff2f6c;
+      font-weight: bold;
+    }
+    .overlay button {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s;
+    }
+    .overlay button:hover {
+      background: rgba(255,255,255,0.5);
+    }
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <img src="https://i.ibb.co/nNZCZ00Q/1000071927.png" class="logo" alt="Logo" />
+    <div class="menu">
+      <button>تسجيل الدخول</button>
+      <button>الاشتراك</button>
+    </div>
+    <div class="hamburger" onclick="toggleSidebar()">
+      <div></div><div></div><div></div>
+    </div>
+  </header>
+
+  <div class="sidebar">
+    <a href="#">الرئيسية</a>
+    <a href="HR1.html">Gay</a>
+    <a href="HR2.html">girls </a>
+    <a href=".html">Back</a>
+  </div>
+
+  <div class="video-container">
+    <div class="video-card">
+      <video src="https://video.twimg.com/amplify_video/1915809075637473280/vid/avc1/720x1280/3cGbvvP2fTqRBtHO.mp4?tag=14" autoplay muted loop onloadedmetadata="showDuration(this)"></video>
+      <div class="video-duration"></div>
+      <div class="overlay">
+        <div class="info">
+          <span class="likes">❤️ 1000</span>
+          <span>🎥 فيديو 1</span>
+        </div>
+        <div>
+          <button>👍</button>
+          <button>💬</button>
+          <button>🔗</button>
+        </div>
+      </div>
+    </div>
+    <div class="video-card">
+      <video src="https://video.twimg.com/amplify_video/1914040769784016897/vid/avc1/720x720/kirDFLqLWPPW8oWs.mp4?tag=16" autoplay muted loop onloadedmetadata="showDuration(this)"></video>
+      <div class="video-duration"></div>
+      <div class="overlay">
+        <div class="info">
+          <span class="likes">❤️ 850</span>
+          <span>🎥 فيديو 2</span>
+        </div>
+        <div>
+          <button>👍</button>
+          <button>💬</button>
+          <button>🔗</button>
+        </div>
+      </div>
+    </div>
+    <div class="video-card">
+      <video src="https://video.twimg.com/amplify_video/1913715176139862016/vid/avc1/578x1280/FOKwr3xqax7zGyd-.mp4?tag=14" autoplay muted loop onloadedmetadata="showDuration(this)"></video>
+      <div class="video-duration"></div>
+      <div class="overlay">
+        <div class="info">
+          <span class="likes">❤️ 1200</span>
+          <span>🎥 فيديو 3</span>
+        </div>
+        <div>
+          <button>👍</button>
+          <button>💬</button>
+          <button>🔗</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.querySelector('.hamburger').classList.toggle('active');
+}
+
+function startCountdown(video) {
+  const durationDiv = video.parentElement.querySelector('.video-duration');
+  let remainingTime = Math.floor(video.duration);
+
+  function updateCountdown() {
+    if (remainingTime >= 0) {
+      let minutes = Math.floor(remainingTime / 60);
+      let seconds = remainingTime % 60;
+      if (seconds < 10) seconds = "0" + seconds;
+      durationDiv.textContent = `${minutes}:${seconds}`;
+      remainingTime--;
+    } else {
+      clearInterval(countdownInterval);
+    }
+  }
+
+  updateCountdown(); // أول مرة نعرضه مباشرة
+  const countdownInterval = setInterval(updateCountdown, 1000);
+
+  // لما يطلع الفيديو من الشاشة نوقف العداد
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) {
+        clearInterval(countdownInterval);
+      }
+    });
+  }, { threshold: 0.1 });
+  observer.observe(video);
+}
+
+const videos = document.querySelectorAll('video');
+videos.forEach(video => {
+  video.addEventListener('loadedmetadata', () => startCountdown(video));
+});
+
+  </script>
+</body>
+</html>
