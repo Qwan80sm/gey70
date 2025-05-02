@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مرحباً بك</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      color: white;
+      height: 100vh;
+      background: #000;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .video-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+    }
+
+    .video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.4) saturate(1.2);
+    }
+
+    .content {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 60px 40px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 8px 40px rgba(255, 0, 90, 0.2), inset 0 0 30px rgba(255, 255, 255, 0.02);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      animation: fadeInUp 1.4s ease;
+    }
+
+    h1:first-child {
+      font-size: 50px;
+      margin-bottom: 10px;
+      color: #ff2f6c;
+      text-shadow: 0 0 20px #ff2f6c88;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #eee;
+      margin-bottom: 40px;
+    }
+
+    .start-btn {
+      display: inline-block;
+      padding: 14px 50px;
+      background: linear-gradient(135deg, #ff2f6c, #d100c5, #7b00ff);
+      background-size: 200% 200%;
+      animation: gradientMove 4s ease infinite;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 35px;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(255, 47, 108, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255, 47, 108, 0.6);
+    }
+
+    .loading-text {
+      font-size: 18px;
+      margin-top: 20px;
+      color: #ffccff;
+      display: none;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- صوت الدخول -->
+  <audio id="enter-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_40bda7242b.mp3?filename=click-124467.mp3"></audio>
+
+  <div class="video-bg">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="https://video.twimg.com/ext_tw_video/1916488916837732352/pr/vid/avc1/720x1280/IktIAe03p8-LQZ--.mp4?tag=12" type="video/mp4" />
+      المتصفح لا يدعم عرض الفيديو.
+    </video>
+  </div>
+
+  <div class="content">
+    <h1>🜠</h1>
+    <h1>مرحباً بك في قسم انثى</h1>
+    <p>اضغط "ابدأ" واستمتع بتجربة استثنائية!</p>
+    <button class="start-btn" onclick="startExperience()">ابدأ التصفح</button>
+    <div class="loading-text" id="loadingText">جاري التحميل...</div>
+  </div>
+
+  <script>
+    function startExperience() {
+      const sound = document.getElementById('enter-sound');
+      const loadingText = document.getElementById('loadingText');
+
+      // تشغيل الصوت
+      sound.play();
+
+      // إظهار جاري التحميل
+      loadingText.style.display = 'block';
+
+      // تأخير الانتقال 2 ثانية
+      setTimeout(() => {
+        window.location.href = "rr.html";
+      }, 4000);
+    }
+  </script>
+
+</body>
+</html>

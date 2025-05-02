@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TikTok فخم</title>
+
+  <!-- روابط تحميل الفيديوهات مسبقًا -->
+  <link rel="preload" as="video" href="https://video.twimg.com/amplify_video/1916870680890736640/vid/avc1/1118x1080/4NZ6C9EKUYR5d3LF.mp4?tag=16" type="video/mp4">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+    body {
+      background: #000;
+      overflow: hidden;
+      direction: rtl;
+    }
+    #tiktokContainer {
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+      overflow: hidden;
+    }
+    .video-slide {
+      height: 100vh;
+      width: 100vw;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: transform 0.6s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    video {
+      position: absolute;
+      width: 96%;
+      height: 98%;
+      object-fit: cover;
+      z-index: 1;
+      border: 5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+    .overlay {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    }
+    .info {
+      color: white;
+      max-width: 75%;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    }
+    .info h3 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    .info p {
+      font-size: 15px;
+      color: #ddd;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      color: white;
+      margin-bottom: 50px;
+    }
+    .action-btn {
+      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 14px;
+      border-radius: 50%;
+      cursor: pointer;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(255,255,255,0.15);
+      transition: 0.3s;
+    }
+    .action-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+    .action-btn svg {
+      width: 26px;
+      height: 26px;
+      fill: white;
+    }
+    .favorited svg {
+      fill: #ff4444;
+    }
+    .countdown-timer {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.65);
+      color: #00ffcc;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      z-index: 10;
+      box-shadow: 0 0 10px rgba(0,255,204,0.3);
+    }
+    .sound-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 5;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      transition: 0.3s;
+    }
+    .sound-toggle:hover {
+      background: rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<div id="tiktokContainer"></div>
+
+<script>
+  const videos = [
+        {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1917880857102012416/vid/avc1/720x1280/cqhzPeBCFrg0ajUw.mp4?tag=16",
+        views: "1.4M مشاهدة"
+      },
+        {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1917609385402179584/vid/avc1/704x1280/QlJVhCteNSOpGb4O.mp4?tag=14",
+        views: "1.4M مشاهدة"
+      },
+            {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1916159667291533312/vid/avc1/720x1280/KoxY7nRu-83cAdO3.mp4?tag=14",
+        views: "1.4M مشاهدة"
+      },
+            {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1894072577426886657/vid/avc1/1920x1080/hO-QowgnWCk4PLxI.mp4?tag=16",
+        views: "1.4M مشاهدة"
+      },
+    {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1917556800175706112/vid/avc1/1080x1440/NXmnQYxRGaRZT5US.mp4?tag=16",
+        views: "1.4M مشاهدة"
+      },
+            {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1917283176600195073/vid/avc1/1280x720/5HyM-oh6P9cfJk4T.mp4?tag=14",
+        views: "1.4M مشاهدة"
+      },
+            {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1912286758546399232/vid/avc1/1920x1080/4MQctv44BhqxSiW_.mp4?tag=16",
+        views: "1.4M مشاهدة"
+      },
+          {
+        title: "",
+        url: "https://video.twimg.com/ext_tw_video/1916521011131961344/pu/vid/avc1/720x1280/Pv8HSRRS7ioSvNjU.mp4?tag=12",
+        views: "1.4M مشاهدة"
+      },
+          {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1916625046056890369/vid/avc1/720x1128/DAgZOmBoDCs9pP4J.mp4?tag=14",
+        views: "1.4M مشاهدة"
+      },
+{
+        title: "",
+        url: "https://video.twimg.com/ext_tw_video/1917669705336135680/pr/vid/avc1/720x1248/0CvKjuY4iTCL5PGt.mp4?tag=12",
+        views: "1.4M مشاهدة"
+      },
+            {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1917358790367752192/vid/avc1/974x720/ZNMSpm-gblKcBdBZ.mp4?tag=16",
+        views: "1.4M مشاهدة"
+      },
+            {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1917610611380224000/vid/avc1/720x1280/mgP_P_qdjMCQHHuq.mp4?tag=16",
+        views: "1.4M مشاهدة"
+      },
+          {
+        title: "",
+        url: "https://video.twimg.com/ext_tw_video/1917612847917314050/pu/vid/avc1/720x1280/iUmpWjLfOAQ-Q3_O.mp4?tag=12",
+        views: "1.4M مشاهدة"
+      },
+      {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1914035172741193728/vid/avc1/1280x720/n7zesyMiiYOZP1sT.mp4?tag=14",
+        views: "1.4M مشاهدة"
+      },
+          {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1917159362977583104/vid/avc1/1080x1080/0BWz9Ospfdl05q1i.mp4?tag=16",
+        views: "1.4M مشاهدة"
+      },
+          {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1904316048238862336/vid/avc1/464x848/RD9wOW9C_2dV5P8C.mp4?tag=14",
+        views: "1.4M مشاهدة"
+      },
+          {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1904304863129059328/vid/avc1/720x1280/N6Ee8LruylPNCRSE.mp4?tag=14",
+        views: "1.4M مشاهدة"
+      },
+          {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1917256102040698880/vid/avc1/1080x1920/SJnN7miX76GnzOCl.mp4?tag=16",
+        views: "1.4M مشاهدة"
+      },
+      {
+        title: "",
+        url: "https://video.twimg.com/amplify_video/1916370666426978304/vid/avc1/1080x1920/jLI8BT4gTgGdCvvh.mp4?tag=16",
+        views: "1.4M مشاهدة"
+      },
+      {
+        title: "رقصة خرافية 2024",
+        url: "https://h.top4top.io/m_3391zfvuc0.mp4",
+        views: "2.1M مشاهدة"
+      },
+      {
+        title: "ترند مجنون",
+        url: "https://video.twimg.com/amplify_video/1916870680890736640/vid/avc1/1118x1080/4NZ6C9EKUYR5d3LF.mp4?tag=16",
+        views: "1.4M مشاهدة"
+      }
+    ];
+
+  const container = document.getElementById('tiktokContainer');
+  let currentIndex = 0;
+
+  videos.forEach((video, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'video-slide';
+    slide.style.transform = `translateY(${index * 100}%)`;
+    slide.innerHTML = `
+      <video src="${video.url}" autoplay loop playsinline preload="auto"></video>
+      <div class="countdown-timer">00:00</div>
+      <button class="sound-toggle">كتم الصوت</button>
+      <div class="overlay">
+        <div class="info">
+          <h3>${video.title}</h3>
+          <p>${video.views}</p>
+        </div>
+        <div class="actions">
+          <div class="action-btn favorite-btn" title="إعجاب">
+            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 
+            12.28 2 8.5 2 5.42 4.42 3 
+            7.5 3c1.74 0 3.41 0.81 
+            4.5 2.09C13.09 3.81 14.76 
+            3 16.5 3 19.58 3 22 5.42 
+            22 8.5c0 3.78-3.4 6.86-8.55 
+            11.54L12 21.35z"/></svg>
+          </div>
+          <div class="action-btn" title="تحميل" onclick="downloadVideo('${video.url}')">
+            <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm7-18l-5.5 
+            5.5h4v6h3v-6h4L12 2z"/></svg>
+          </div>
+          <div class="action-btn share-btn" title="مشاركة">
+            <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 
+            12.7c.05-.23.09-.46.09-.7s-.03-.47-.09-.7l7.02-4.11c.53.5 
+            1.23.81 2.07.81 1.66 0 3-1.34 
+            3-3s-1.34-3-3-3-3 1.34-3 
+            3c0 .24.04.47.09.7L8.91 9.81C8.38 
+            9.31 7.68 9 6.84 9c-1.66 0-3 
+            1.34-3 3s1.34 3 3 3c.84 0 1.54-.31 
+            2.07-.81l7.12 4.17c-.05.21-.09.43-.09.64 
+            0 1.52 1.23 2.75 2.75 2.75S21 
+            19.6 21 18.08s-1.23-2-2.75-2z"/></svg>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(slide);
+  });
+
+  const slides = document.querySelectorAll('.video-slide');
+
+  function showSlide(index) {
+    if (index < 0 || index >= slides.length) return;
+    currentIndex = index;
+    slides.forEach((slide, i) => {
+      slide.style.transform = `translateY(${(i - index) * 100}%)`;
+      const video = slide.querySelector('video');
+      if (i === index) {
+        video.muted = false;
+        video.volume = 1.0;
+        video.play();
+        const timer = slide.querySelector('.countdown-timer');
+        if (video.readyState >= 2) {
+          startCountdown(video, timer);
+        } else {
+          video.onloadedmetadata = () => startCountdown(video, timer);
+        }
+      } else {
+        video.pause();
+      }
+    });
+  }
+
+  function startCountdown(video, display) {
+    const duration = Math.floor(video.duration);
+    let remaining = duration;
+    clearInterval(display._interval);
+    display._interval = setInterval(() => {
+      const minutes = String(Math.floor(remaining / 60)).padStart(2, '0');
+      const seconds = String(remaining % 60).padStart(2, '0');
+      display.textContent = `${minutes}:${seconds}`;
+      if (remaining <= 0) clearInterval(display._interval);
+      remaining--;
+    }, 1000);
+  }
+
+  function downloadVideo(url) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'video.mp4';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  container.addEventListener('touchstart', (e) => {
+    startY = e.touches[0].clientY;
+    isSwiping = true;
+  });
+
+  container.addEventListener('touchmove', (e) => {
+    if (!isSwiping) return;
+    const endY = e.touches[0].clientY;
+    const diff = startY - endY;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) showSlide(currentIndex + 1);
+      else showSlide(currentIndex - 1);
+      isSwiping = false;
+    }
+  });
+
+  container.addEventListener('wheel', (e) => {
+    if (e.deltaY > 0) showSlide(currentIndex + 1);
+    else showSlide(currentIndex - 1);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.favorite-btn')) {
+      const btn = e.target.closest('.favorite-btn');
+      btn.classList.toggle('favorited');
+    }
+
+    if (e.target.closest('.share-btn')) {
+      const videoData = videos[currentIndex];
+      navigator.share ? navigator.share({
+        title: videoData.title,
+        url: videoData.url
+      }) : alert("المتصفح لا يدعم المشاركة.");
+    }
+
+    if (e.target.classList.contains('sound-toggle')) {
+      const video = slides[currentIndex].querySelector('video');
+      video.muted = !video.muted;
+      e.target.textContent = video.muted ? 'تشغيل الصوت' : 'كتم الصوت';
+    }
+  });
+
+  let startY = 0;
+  let isSwiping = false;
+
+  showSlide(0);
+</script>
+
+</body>
+</html>

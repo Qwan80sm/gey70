@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>مشغل فيديو احترافي + قالب فيديوهات</title>
+
+  <!-- استدعاء ملفات مكتبة Plyr -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.5.1/plyr.css" />
+
+  <style>
+    body {
+      margin: 0;
+      background: #121212;
+      color: white;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    header {
+      background: #1f1f1f;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .player-wrapper {
+      position: relative;
+      margin-bottom: 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .video-card {
+      background: #1f1f1f;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+    }
+
+    .video-card img {
+      width: 100%;
+      display: block;
+    }
+
+    .video-card .title {
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>مشغل فيديو احترافي مع قائمة فيديوهات</header>
+
+<div class="container">
+  <!-- المشغل الرئيسي -->
+  <div class="player-wrapper">
+    <video id="player" playsinline controls>
+      <source src="https://video.twimg.com/ext_tw_video/1916521011131961344/pu/vid/avc1/720x1280/Pv8HSRRS7ioSvNjU.mp4?tag=12" type="video/mp4" />
+    </video>
+  </div>
+
+  <!-- شبكة الفيديوهات -->
+  <div class="video-grid">
+    <div class="video-card" onclick="changeVideo('https://video.twimg.com/amplify_video/1916625046056890369/vid/avc1/720x1128/DAgZOmBoDCs9pP4J.mp4?tag=14')">
+      <img src="https://via.placeholder.com/300x180.png?text=فيديو+١" alt="Video 1">
+      <div class="title">فيديو ١</div>
+    </div>
+
+    <div class="video-card" onclick="changeVideo('https://cdn.plyr.io/static/blank.mp4')">
+      <img src="https://via.placeholder.com/300x180.png?text=فيديو+٢" alt="Video 2">
+      <div class="title">فيديو ٢</div>
+    </div>
+
+    <div class="video-card" onclick="changeVideo('https://video.twimg.com/ext_tw_video/1916521011131961344/pu/vid/avc1/720x1280/Pv8HSRRS7ioSvNjU.mp4?tag=12')">
+      <img src="https://via.placeholder.com/300x180.png?text=فيديو+٣" alt="Video 3">
+      <div class="title">فيديو ٣</div>
+    </div>
+
+    <!-- أضف المزيد من الفيديوهات هنا -->
+  </div>
+</div>
+
+<!-- ملفات مكتبة Plyr -->
+<script src="https://cdn.plyr.io/3.5.1/plyr.js"></script>
+
+<script>
+  const player = new Plyr('#player');
+
+  function changeVideo(source) {
+    player.source = {
+      type: 'video',
+      sources: [
+        {
+          src: source,
+          type: 'video/mp4',
+        },
+      ],
+    };
+    player.play();
+  }
+</script>
+
+</body>
+</html>
